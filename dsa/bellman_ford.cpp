@@ -1,17 +1,12 @@
 //{ Driver Code Starts
 #include <bits/stdc++.h>
 using namespace std;
-
-// } Driver Code Ends
-// User function Template for C++
+//time com  : O(v*e) 
+//space com : O(v)
+// A Bellman-Ford algorithm is also guaranteed to find the shortest path in a graph, similar to Dijkstra’s algorithm. Although Bellman-Ford is slower than Dijkstra’s algorithm, it is capable of handling graphs with negative edge weights, which makes it more versatile. The shortest path cannot be found if there exists a negative cycle in the graph. If we continue to go around the negative cycle an infinite number of times, then the cost of the path will continue to decrease (even though the length of the path is increasing). As a result, Bellman-Ford is also capable of detecting negative cycles, which is an important feature.
 
 class Solution {
   public:
-    /*  Function to implement Bellman Ford
-    *   edges: vector of vectors which represents the graph
-    *   S: source vertex to start traversing graph with
-    *   V: number of vertices
-    */
     vector<int> bellman_ford(int V, vector<vector<int>>& edges, int S) {
         vector<int> dist(V,1e8);
         dist[S]=0;
