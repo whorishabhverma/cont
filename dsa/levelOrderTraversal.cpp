@@ -1,6 +1,5 @@
 #include<bits/stdc++.h>
 using namespace std;
-//morris inorder
 class TreeNode{
     public:
     int val;
@@ -10,30 +9,6 @@ class TreeNode{
     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
-
-vector<int> morris(TreeNode* root){
-    vector<int> result;
-    TreeNode* curr = root;
-    while(curr!=NULL){
-        if(curr->left==NULL){   
-            result.push_back(curr->val);
-            curr=curr->right;
-        }
-        else{
-            TreeNode* leftChild = curr->left;
-            while(leftChild->right != NULL){
-                leftChild=leftChild->right;
-            } 
-            leftChild->right = curr;
-            TreeNode* temp = curr;
-            curr=curr->left;
-            temp->left=NULL;
-        }
-        
-    }
-    return result;
-}
-
 TreeNode* buildTree() {
     int val;
     cin >> val;
@@ -50,23 +25,35 @@ TreeNode* buildTree() {
     
     return root;
 }
+
+
+vector<vector<int>> levelOrderTraversal(TreeNode* root){
+    vector<vector<int>> ans;
+    queue<TreeNode*> q;
+    q.push(root);
+    while(!q.empty()){
+        int size=q.size();
+        vector<int> level;
+        for(int i=0;i<size;i++){
+            TreeNode* node = q.front(); q.pop();
+            if(node->left)  q.push(node->left);
+            if(node->right) q.push(node->right);
+            level.push_back(node->val);
+        }
+        ans.push_back(level);
+    }
+    return ans;
+}
 int main(){
     cout << "Enter the root value (-1 for null): ";
     TreeNode* root = buildTree();
-    // Perform Morris inorder traversal
-    vector<int> inorder = morris(root);
 
-    // Print the result
-    cout << "Inorder traversal: ";
-    for(int val : inorder) {
-        cout << val << " ";
+    vector<vector<int>> levels =  levelOrderTraversal(root);
+    cout<<"level Order Traversal"<<endl;
+    for(auto ele:levels){
+        for(auto it:ele){
+            cout<<it<<" ";
+        }
+        cout<<endl;
     }
-    cout << endl;
-
-    return 0;
 }
-
-
-
-
-
