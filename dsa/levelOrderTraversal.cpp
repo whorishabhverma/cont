@@ -44,9 +44,45 @@ vector<vector<int>> levelOrderTraversal(TreeNode* root){
     }
     return ans;
 }
+
+
+//RIGHT VIEW RECURSION
+void recursion(TreeNode* root,vector<int> &ans,int i){
+    if(!root) return;
+    if(i==ans.size()) ans.push_back(root->val);
+    recursion(root->right,ans,i+1);
+    recursion(root->left,ans,i+1);
+}
+
+vector<int> rightSideView(TreeNode* root) {
+        vector<int> ans;
+        if(!root) return ans;
+        queue<TreeNode*> q;
+        q.push(root);
+        while (!q.empty()) {
+            int size = q.size();
+            int right=0;
+            for (int i = 0; i < size; i++) {
+                TreeNode* node = q.front();
+                q.pop();
+                if (i == size - 1) {  // Only add the rightmost node of each level
+                    ans.push_back(node->val);
+                }
+                if (node->left )
+                    q.push(node->left);
+                if (node->right)
+                    q.push(node->right);
+            }
+        }
+        return ans;
+v}
+
+
+
 int main(){
     cout << "Enter the root value (-1 for null): ";
     TreeNode* root = buildTree();
+
 
     vector<vector<int>> levels =  levelOrderTraversal(root);
     cout<<"level Order Traversal"<<endl;

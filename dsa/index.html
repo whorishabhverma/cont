@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>create two button for increment and decrement any integer number</div>
+    <div id="item">
+        <button onClick="decrement()">decrement</button>
+        <span id="item2">0</span>
+        <button onClick="increment()">increment</button>
+    </div>
+    <script>
+          function increment() {
+            let val=document.getElementById("item2").innerHTML;
+            document.getElementById("item2").innerHTML=val+1;
+          }
+          function decrement() {
+            let val=document.getElementById("item2").innerHTML;
+            document.getElementById("item2").innerHTML=val-1;
+          }
+    </script>
+</body>
+</html>

@@ -14,6 +14,7 @@ class ListNode {
         val=x;
         next=nullptr;
       }
+      //Parameterized constructor with initialization list
       ListNode(int x, ListNode *next) : val(x),next(next) {
         // val = x;
         // next = next;
@@ -77,7 +78,7 @@ ListNode* reverseLinkedList(ListNode* head){
         curr=temp;
     }
     return prev;
-}
+} 
 ListNode* addTwoLinkedList(ListNode* head1,ListNode* head2){
     ListNode* dummyHead = new ListNode(-1);
     ListNode* dummyTail = dummyHead;
@@ -100,12 +101,14 @@ ListNode* addTwoLinkedList(ListNode* head1,ListNode* head2){
     }
     return dummyHead->next;
 }
+
 ListNode* oddEvenList(ListNode* head){
     if(head == nullptr || head->next == nullptr) return head;
     ListNode* odd = head;
     ListNode* evenHead = head->next;//sochne wali baat h bhai 
     ListNode* even = head->next;
-    while(even!=nullptr && even->next!=nullptr){//this condition 
+    // while(even!=nullptr && even->next!=nullptr){//this condition 
+    while(odd->next != nullptr && odd->next->next!=nullptr){//this condition mtlb next ke next ko access krne se phle hmesa next ke baare me socha khi ye y=hi null na ho to condition iski do sbse phle
         odd->next  = odd->next->next;
         even->next = even->next->next;
         odd=odd->next;
@@ -114,6 +117,7 @@ ListNode* oddEvenList(ListNode* head){
     odd->next = evenHead;
     return head;
 }
+
 ListNode* segregate(ListNode* head){
     ListNode* zeroHead = new ListNode(-1);  
     ListNode* oneHead  = new ListNode(-1); 
@@ -141,13 +145,14 @@ ListNode* segregate(ListNode* head){
 
     zero->next = (oneHead->next!=nullptr) ? oneHead->next : twoHead->next;
     one->next  = twoHead->next;
-    two->next = NULL; //necessary condition
+    two->next = NULL; //necessary condition 1 0 0 2 0 1 
     ListNode* newNode =  zeroHead->next; 
     delete(zeroHead);
     delete(oneHead);
     delete(twoHead);
     return newNode; 
 }
+
 ListNode* removeNthFromEnd(ListNode* head, int n) {
     ListNode* fast = head;  
     ListNode* slow = head;
@@ -163,6 +168,25 @@ ListNode* removeNthFromEnd(ListNode* head, int n) {
     return head;
 }
 
+ListNode* removeNthFromEnd(ListNode* head, int n) { //two pass 
+        ListNode* temp = head;
+        int len=0;
+        while(temp) {
+            len++;
+            temp=temp->next;
+        }
+        if (n == len) {
+            return head->next;
+        }
+        int itna = len-n-1;
+        ListNode* slow=head;
+        for(int i=1;i<=itna;i++){
+            slow=slow->next;
+        }
+        slow->next = slow->next->next;
+        return head;
+    }
+ 
 
 bool isPalindrome(ListNode* head){
     ListNode* slow = head;
@@ -221,10 +245,10 @@ ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
         }    
         return nullptr;
     }
-    // ek treeka ye bhi ho skta dono ki lenegth nikaalo and bdi lenegth se chote ko minus kro jo aaye utna bde waale ko aage bdahao then ccompare kro
+    // ek treeka ye bhi ho skta dono ki lenegth nikaalo and bdi lenegth se chote ko minus kro jo aaye utna bde waale ko aage bdahao then compare kro
 
 
-//optimal 
+//optimal : opposite waala system
 ListNode *getIntersectionNodeOptimal(ListNode *headA, ListNode *headB) {
         if(headA==NULL || headB==NULL) return nullptr;
         ListNode* temp1 = headA;
@@ -299,7 +323,33 @@ ListNode *getIntersectionNodeOptimal(ListNode *headA, ListNode *headB) {
                 slow->next = slow->next->next;
                 delete(middle);
                 return head;
-        }   
+        } 
+        ListNode* deleteMiddle(ListNode* head) {
+            // If the list is empty or has only one node, return NULL
+            if (head == NULL || head->next == NULL) {
+                delete head;
+                return NULL;
+            }
+        
+            ListNode* slow = head;
+            ListNode* fast = head;
+            ListNode* prev = NULL;
+        
+            // Find the middle node
+            while (fast != NULL && fast->next != NULL) {
+                prev = slow;
+                slow = slow->next;
+                fast = fast->next->next;
+            }
+        
+            // Delete the middle node
+            if (prev != NULL) {
+                prev->next = slow->next;
+                delete slow;
+            } 
+        
+            return head;
+        }  
 
         /*
         delete all occurences of k from a doubly linked list 
@@ -371,7 +421,23 @@ ListNode *getIntersectionNodeOptimal(ListNode *headA, ListNode *headB) {
         }
         return ds;
         }
+ //leetcode
+ListNode* removeElements(ListNode* head, int val) {
+        while(head!=NULL && head->val == val){
+            head=head->next;
+        }
+        if(head == NULL) return head;
+        ListNode* temp = head;
+        while(temp->next){
+            if(temp->next->val == val ){
+                temp->next = temp->next->next;
+            }
+            else
+            temp=temp->next;
+        }
+        return head;
 
+    }
 
     //remove duplicates from a sorted linked list // array ko elekr smjho
         Node * removeDuplicates(struct Node *head)
@@ -581,7 +647,7 @@ int main(){
     // printLinkedList(reverseLinkedList(head));
     // printLinkedList(addTwoLinkedList(head,head1));
     // printLinkedList(oddEvenList(head));
-    // printLinkedList(segregate(head3));
+    printLinkedList(segregate(head3));
     // printLinkedList(removeNthFromEnd(head,2));
     // printLinkedList(addOneToLinkedList(head1));          //dekhna pdega
 

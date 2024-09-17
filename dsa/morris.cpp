@@ -11,28 +11,87 @@ class TreeNode{
     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-vector<int> morris(TreeNode* root){
+#include<bits/stdc++.h>
+vector<int> morrisPostorder(TreeNode* root) {
     vector<int> result;
     TreeNode* curr = root;
-    while(curr!=NULL){
-        if(curr->left==NULL){   
+
+    while (curr != NULL) {
+        if (curr->right == NULL) {
             result.push_back(curr->val);
-            curr=curr->right;
+            curr = curr->left;
+        } else {
+            TreeNode* rightChild = curr->right;
+            while (rightChild->left != NULL && rightChild->left != curr) {
+                rightChild = rightChild->left;
+            }
+            if (rightChild->left == NULL) {
+                rightChild->left = curr;
+                result.push_back(curr->val);
+                curr = curr->right;
+            } else {
+                rightChild->left = NULL;
+                curr = curr->left;
+            }
         }
-        else{
+    }
+
+    reverse(result.begin(), result.end());
+    return result;
+}
+
+vector<int> morrisInorder(TreeNode* root) {
+    vector<int> result;
+    TreeNode* curr = root;
+    while (curr != NULL) {
+        if (curr->left == NULL) {   
+            result.push_back(curr->val);
+            curr = curr->right;
+        } else {
             TreeNode* leftChild = curr->left;
-            while(leftChild->right != NULL){
-                leftChild=leftChild->right;
-            } 
-            leftChild->right = curr;
-            TreeNode* temp = curr;
-            curr=curr->left;
-            temp->left=NULL;
+            while (leftChild->right != NULL && leftChild->right != curr) {
+                leftChild = leftChild->right;
+            }
+            if (leftChild->right == NULL) {
+                leftChild->right = curr;
+                curr = curr->left;
+            } else {
+                leftChild->right = NULL;
+                result.push_back(curr->val);
+                curr = curr->right;
+            }
         }
-        
     }
     return result;
 }
+vector <int> morrisPreorder(TreeNode* root)
+{
+    vector<int> result;
+    TreeNode* curr = root;
+    while (curr != NULL) {
+        if (curr->left == NULL) {
+            result.push_back(curr->val);  // Visit the node
+            curr = curr->right;
+        } else {
+            TreeNode* leftChild = curr->left;
+            while (leftChild->right != NULL && leftChild->right != curr) {
+                leftChild = leftChild->right;
+            }
+            if (leftChild->right == NULL) {
+                result.push_back(curr->val);  // Visit the node
+                leftChild->right = curr;
+                curr = curr->left;
+            } else {
+                leftChild->right = NULL;
+                curr = curr->right;
+            }
+        }
+    }
+    return result;
+}
+\
+// line 60 ko line 55-56 je beech me daal do
+
 
 TreeNode* buildTree() {
     int val;
@@ -54,11 +113,24 @@ int main(){
     cout << "Enter the root value (-1 for null): ";
     TreeNode* root = buildTree();
     // Perform Morris inorder traversal
-    vector<int> inorder = morris(root);
+    vector<int> inorder = morrisInorder(root);
+    vector<int> postorder = morrisPostorder(root);
+    vector<int> preorder = morrisPreorder(root);
+    
+    
+
 
     // Print the result
     cout << "Inorder traversal: ";
     for(int val : inorder) {
+        cout << val << " ";
+    }
+    cout << endl;
+
+
+    // Print the result
+    cout << "postorder traversal: ";
+    for(int val : postorder) {
         cout << val << " ";
     }
     cout << endl;

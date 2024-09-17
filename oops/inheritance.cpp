@@ -1,44 +1,43 @@
-/*
-phle parent class ka constructor call hoga fir child ka
-destructor phle childka fur parent ka 
-parametrized constructor ko hmne bnaya to ye automatically called nhi hote inhe hme call krna hoga*/
-#include<bits/stdc++.h>
+#include <iostream>
 using namespace std;
-class Person{
-    public:
-    string name;
-    int age;
-    int rollno;
-    // Person(){
-    //     cout<<"Parent constructor called"<<endl;
-    // }
-    Person(string name,int age,int rollno){
-        this->name = name;
-        this->age = age;
-        this->rollno  = rollno;
 
+// Abstract base class
+class Shape {
+public:
+    // Pure virtual function
+    virtual void draw() const = 0;
+    virtual ~Shape() {} // Virtual destructor
+};
+
+// Derived class
+class Circle : public Shape {
+public:
+    void draw() const override {
+        cout << "Drawing a Circle" << endl;
     }
 };
-class Student:private Person{
-    public:
-    string type;
-        Student(string name,int age,int rollno,string type):Person(name,age,rollno){
-            this->type=type;
-            cout<<"child constructor called\n";
-        }
-    void getInfo(){
-        cout<<"name : "<<name<<endl;
-        cout<<"roll no. : "<<rollno<<endl;
-        cout<<"age : "<<age<<endl;
-        cout<<"type : "<<type<<endl;
+
+// Another derived class
+class Square : public Shape {
+public:
+    void draw() const override {
+        cout << "Drawing a Square" << endl;
     }
 };
-int main(){
-    Student s1("rishabh",13,26,"male");
-    // s1.name = "rishabh verma ";
-    // s1.age = 98;
-    // s1.rollno = 80;
-    // s1.type = "male";
-    s1.getInfo();
 
+int main() {
+    // Shape shape; // This line would cause a compile-time error because Shape is abstract
+
+    // Create instances of derived classes
+    Shape* shape1 = new Circle();
+    Shape* shape2 = new Square();
+
+    shape1->draw();  // Output: Drawing a Circle
+    shape2->draw();  // Output: Drawing a Square
+
+    // Clean up
+    delete shape1;
+    delete shape2;
+
+    return 0;
 }
