@@ -1,0 +1,15 @@
+https://www.geeksforgeeks.org/problems/subarray-range-with-given-sum0128/1
+int subArraySum(vector<int>& arr, int tar) {
+        unordered_map<int,int> mp;
+        mp[0] = 1;
+        int currSum = 0,cnt=0;
+        for(int i=0;i<arr.size();i++){
+            currSum+=arr[i];
+            if(mp.find(currSum-tar) != mp.end()){
+                cnt+=mp[currSum-tar];
+            }
+            mp[currSum]++;
+        }
+        return cnt;
+    }
+
